@@ -110,3 +110,5 @@ if __name__ == "__main__":
     
     # Index sorted BAM files
     index_sorted_bam_files(mapping_directory)
+
+# next step variant calling
