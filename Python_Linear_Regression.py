@@ -9,7 +9,7 @@
 # Unsupervised
     # clustering: finds patterns in by grouping them into clusters e.g. social nextworks clustering topics in their news feeds
 
-#### LINEAR REGRESSION - independent variable x (height) and find predictive value of independent variable y (weight)
+#### LINEAR REGRESSION - independent variable x (height) and find predictive value of dndependent variable y (weight)
     # y = g(x)
     # use training data set to infer what the function g should be
     # can now use learned function g to predict values y, for new values x
@@ -209,4 +209,97 @@ plt.plot(months, revenue, "o")
 plt.plot(months, y)
 
 plt.show()
+
+################################################################
+# using sklearn.linear_model e.g.
+
+from sklearn.linear_model import LinearRegression
+import matplotlib.pyplot as plt
+import numpy as np
+
+temperature = np.array(range(60, 100, 2))
+temperature = temperature.reshape(-1, 1)
+sales = [65, 58, 46, 45, 44, 42, 40, 40, 36, 38, 38, 28, 30, 22, 27, 25, 25, 20, 15, 5]
+
+plt.plot(temperature, sales, 'o')
+plt.show()
+
+# 
+line_fitter = LinearRegression()
+line_fitter.fit(temperature,sales)
+
+# predict sales values based on what temperature would produce on the line of best fit
+sales_predict = line_fitter.predict(temperature)
+
+plt.plot(temperature,sales_predict)
+plt.show()
  
+
+############################
+# We can measure how well a line fits by measuring loss.
+# The goal of linear regression is to minimize loss.
+# To find the line of best fit, we try to find the b value (intercept) and the m value (slope) that minimize loss.
+# Convergence refers to when the parameters stop changing with each iteration.
+# Learning rate refers to how much the parameters are changed on each iteration.
+# We can use Scikit-learn’s LinearRegression() model to perform linear regression on a set of points.
+
+# linear regression uses the slope and intercept to minimise the number of loss
+
+#############################
+# new data set - honey production - creating linear regression and predicting future honey production
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+from sklearn import linear_model
+
+df = pd.read_csv("https://content.codecademy.com/programs/data-science-path/linear_regression/honeyproduction.csv")
+
+# 1 look at data
+print(df.head())
+prod_per_year = df.groupby("year").totalprod.mean().reset_index()
+print(prod_per_year)
+
+# 2 table of only year and reshape it
+x = prod_per_year["year"]
+x = x.values.reshape(-1,1)
+print(x)
+
+# 3 table of only totalprod
+y = prod_per_year["totalprod"]
+print(y)
+
+# 4 make scatter plot y vs x and show it
+plt.scatter(y,x)
+#plt.show()
+
+# 5 create and fit a linear regression
+# make linear regression model
+regr = linear_model.LinearRegression()
+regr.fit(x,y)
+
+# 6 after you have fit the model, print slope and intercept of the line
+print(regr.coef_,regr.intercept_)
+
+# 7 create a list that predict the y values
+y_predict = regr.predict(x)
+
+# 8 create a plot of y_predict against x
+plt.plot(y_predict,x)
+plt.show()
+
+# 9 predict 2050 value - create a NumPy array
+x_future = np.array(range(2013,2051))
+x_future = x_future.reshape(-1,1)
+print(x_future)
+
+# 10 predict y values for x_future
+future_predict = regr.predict(x_future)
+
+# 11 plot future predict vs x future
+plt.plot(future_predict,x_future)
+plt.show()
+
+
+#######################################
+# multiple linear regression
+# previously we played with simple linear regression now we will look at multiple linear regression
