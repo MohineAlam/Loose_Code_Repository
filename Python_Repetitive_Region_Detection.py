@@ -42,8 +42,12 @@ def aa_to_codon(sequence, aa_to_codons):
             last_codon = None
     return codon_sequence
 
-# Example usage:
-sequences = ["FFFFFFFLLLLLLLCCCCCCC"]
+# Example amino acid sequence:
+# sequences = ["FFFFFFFLLLLLLLCCCCCCC"]
+
+file_path = r"C:/Users/malam/OneDrive - Oxford Genetics Ltd/Desktop/Code_Repository/Bovine_Adeno_6.txt"
+with open(file_path, "r") as file:
+    sequences = file.readlines()
 
 for seq in sequences:
     codon_seq = aa_to_codon(seq, aa_to_codons)
