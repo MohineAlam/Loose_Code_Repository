@@ -1,99 +1,57 @@
 import random
 
-def find_repeated_codons(sequence):
-    # Translation table for codons to amino acids
-    codon_to_aa = {
-        'TTT': 'F', 'TTC': 'F', 'TTA': 'L', 'TTG': 'L',
-        'TCT': 'S', 'TCC': 'S', 'TCA': 'S', 'TCG': 'S',
-        'TAT': 'Y', 'TAC': 'Y', 'TAA': '*', 'TAG': '*',
-        'TGT': 'C', 'TGC': 'C', 'TGA': '*', 'TGG': 'W',
-        'CTT': 'L', 'CTC': 'L', 'CTA': 'L', 'CTG': 'L',
-        'CCT': 'P', 'CCC': 'P', 'CCA': 'P', 'CCG': 'P',
-        'CAT': 'H', 'CAC': 'H', 'CAA': 'Q', 'CAG': 'Q',
-        'CGT': 'R', 'CGC': 'R', 'CGA': 'R', 'CGG': 'R',
-        'ATT': 'I', 'ATC': 'I', 'ATA': 'I', 'ATG': 'M',
-        'ACT': 'T', 'ACC': 'T', 'ACA': 'T', 'ACG': 'T',
-        'AAT': 'N', 'AAC': 'N', 'AAA': 'K', 'AAG': 'K',
-        'AGT': 'S', 'AGC': 'S', 'AGA': 'R', 'AGG': 'R',
-        'GTT': 'V', 'GTC': 'V', 'GTA': 'V', 'GTG': 'V',
-        'GCT': 'A', 'GCC': 'A', 'GCA': 'A', 'GCG': 'A',
-        'GAT': 'D', 'GAC': 'D', 'GAA': 'E', 'GAG': 'E',
-        'GGT': 'G', 'GGC': 'G', 'GGA': 'G', 'GGG': 'G'
-    }
+# Define the key for amino acids to codons
+aa_to_codons = {
+    'F': ['TTT', 'TTC'],
+    'L': ['TTA', 'TTG', 'CTT', 'CTC', 'CTA', 'CTG'],
+    'S': ['TCT', 'TCC', 'TCA', 'TCG', 'AGT', 'AGC'],
+    'Y': ['TAT', 'TAC'],
+    '*': ['TAA', 'TAG', 'TGA'],
+    'C': ['TGT', 'TGC'],
+    'W': ['TGG'],
+    'P': ['CCT', 'CCC', 'CCA', 'CCG'],
+    'H': ['CAT', 'CAC'],
+    'Q': ['CAA', 'CAG'],
+    'R': ['CGT', 'CGC', 'CGA', 'CGG', 'AGA', 'AGG'],
+    'I': ['ATT', 'ATC', 'ATA'],
+    'M': ['ATG'],
+    'T': ['ACT', 'ACC', 'ACA', 'ACG'],
+    'N': ['AAT', 'AAC'],
+    'K': ['AAA', 'AAG'],
+    'V': ['GTT', 'GTC', 'GTA', 'GTG'],
+    'A': ['GCT', 'GCC', 'GCA', 'GCG'],
+    'D': ['GAT', 'GAC'],
+    'E': ['GAA', 'GAG'],
+    'G': ['GGT', 'GGC', 'GGA', 'GGG']
+}
 
-    # Define the minimum length of repeated codons
-    min_repeated_length = 3  # Adjust as needed
-
-    repeated_regions = []
-
-    # Iterate through the sequence
-    i = 0
-    while i < len(sequence):
-        codon = sequence[i:i+3]  # Assuming codons are triplets
-        start_index = i
-        repeat_count = 1
-
-        # Check for repeated codons
-        j = i + 3
-        while j < len(sequence) and sequence[j:j+3] == codon:
-            repeat_count += 1
-            j += 3
-
-        # If repeated length is greater than or equal to min_repeated_length, add to repeated_regions
-        if repeat_count >= min_repeated_length:
-            amino_acid = codon_to_aa.get(codon, 'Unknown')
-            repeated_regions.append((codon, amino_acid, start_index, repeat_count))
-
-            # Replace the repeated codons with synonymous codons
-            sequence, i = replace_repeated_codons(sequence, i, repeat_count, codon_to_aa)
-
+def aa_to_codon(sequence, aa_to_codons):
+    codon_sequence = ""
+    last_codon = None
+    for aa in sequence:
+        if aa in aa_to_codons:
+            synonymous_codons = [c for c in aa_to_codons[aa] if c != last_codon]
+            if synonymous_codons:
+                chosen_codon = random.choice(synonymous_codons)
+            else:
+                chosen_codon = random.choice(aa_to_codons[aa])
+            codon_sequence += chosen_codon
+            last_codon = chosen_codon
         else:
-            # Move to the next codon
-            i = j
+            codon_sequence += "???"
+            last_codon = None
+    return codon_sequence
 
-    return sequence, repeated_regions
+# Example usage:
+sequences = ["FFFFFFFLLLLLLLCCCCCCC"]
 
-def replace_repeated_codons(sequence, start_index, repeat_count, codon_to_aa):
-    # Find the amino acid for the original codon
-    original_codon = sequence[start_index:start_index + 3]
-    amino_acid = codon_to_aa.get(original_codon)
+for seq in sequences:
+    codon_seq = aa_to_codon(seq, aa_to_codons)
+    print("Amino Acid Sequence:", seq)
+    print("Codon Sequence:", codon_seq)
 
-    # Find synonymous codons for the amino acid (excluding the original codon)
-    synonymous_codons = [codon for codon, aa in codon_to_aa.items() if aa == amino_acid and codon != original_codon]
+# Write the sequence to a text file
+with open("CODON_SEQ.txt", "w") as file:
+    file.write(codon_seq)
 
-    # Remove any synonymous codons that are the same as the original codon
-    synonymous_codons = [codon for codon in synonymous_codons if codon != original_codon]
-
-    # Choose a replacement codon from the synonymous codons if available, else use the original codon
-    if synonymous_codons:
-        replacement_codon = random.choice(synonymous_codons)
-    else:
-        replacement_codon = original_codon
-
-    # Replace the repeated codons with the chosen replacement codon
-    sequence = sequence[:start_index] + (replacement_codon[0] * (repeat_count // 2)) + original_codon + \
-               (replacement_codon[1] * (repeat_count // 2)) + sequence[start_index + 3 * repeat_count:]
-
-    # Adjust the index after replacing the codons
-    start_index += len(original_codon)
-
-    return sequence, start_index
-
-# Example sequence
-sequence = "ATGATGATGAGGGGTTTATGTTTTTTTTTGGCGGCGGC"
-
-# Find repeated codons in the sequence and replace them with synonymous codons
-modified_sequence, repeated_regions = find_repeated_codons(sequence)
-
-# Print the modified sequence
-print("Modified sequence:")
-print(modified_sequence)
-
-# Print the repeated regions found
-if repeated_regions:
-    print("\nRepeated regions found:")
-    for codon, amino_acid, start_index, repeat_count in repeated_regions:
-        end_index = start_index + (3 * repeat_count) - 1
-        print(f"Codon: {codon}, Amino Acid: {amino_acid}, Start Index: {start_index}, End Index: {end_index}")
-else:
-    print("No repeated regions found.")
+print("Sequence with replaced codons has been saved to CODON_SEQ.txt in the current folder")
