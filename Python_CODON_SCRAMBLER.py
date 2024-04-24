@@ -83,7 +83,7 @@ def generate_random_synonymous_sequence(sequence):
         random_synonymous_sequence += random_synonymous_codon_result
     return random_synonymous_sequence
 
-# Example usage
+# User input sequence
 input_sequence = input("Enter a sequence of codons: ").upper()
 random_synonymous_sequence = generate_random_synonymous_sequence(input_sequence)
 print("Generated random synonymous sequence:")
