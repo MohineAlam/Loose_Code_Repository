@@ -17,19 +17,29 @@ def find_matching_regions(seq1, seq2, min_match_length=10):
     return matching_regions
 
 # Sequences
-scrambled_left_codon_seq = ""
-right_codon_seq = ""
+Scrambled_Sequence_1 = ""
+Scrambled_Sequence_2 = ""
 
 # Find matching regions
-matching_regions = find_matching_regions(scrambled_left_codon_seq, right_codon_seq)
+matching_regions = find_matching_regions(Scrambled_Sequence_1, Scrambled_Sequence_2)
 
 # Print the results
 if matching_regions:
     print("Matching Regions:")
     for region in matching_regions:
         print("Sequence 1 Start:", region[0], "Sequence 2 Start:", region[1], "Length:", region[2])
+        print("Sequence 1:", Scrambled_Sequence_1[region[0]:region[0]+region[2]])
+        print("Sequence 2:", Scrambled_Sequence_2[region[1]:region[1]+region[2]])
+        print()
 else:
     print("No matching regions found.")
+
+
+
+
+
+
+
 
 
 
