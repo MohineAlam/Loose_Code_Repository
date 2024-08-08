@@ -3,19 +3,19 @@ source /miniconda3/conda.sh
 conda activate QC
 
 # file output
-output_file="~/path/to/output/count_reads.txt"
-
+output_file=$"$HOME/path/to/output/count_reads.txt"
+input_file=$"$HOME/path/to/input"
 # initialise the output text file
 echo -n "Total_Reads" > "$output_file"
 
 # loop through each .bam file in your folder
-for bam_file in "~/path/to/output/*.bam"; do
+for bam_file in "$input_file"*.bam; do
 
 	# message to user
 	echo "Processing $bam_file"
 
 	#get file name without path
-	bam_filename=$(basename "$bam_file")
+	bam_filename=$(basename "$bam_file" .bam)
 
 	# get total reads
 	total_reads=$(samtools view -c "$bam_file")
