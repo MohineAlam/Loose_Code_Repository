@@ -3,7 +3,7 @@
 # looped_count_reads.sh count total, mapped, and unmapped reads
 #==============================================================#
 #!/bin/bash
-source /opt/miniconda3/etc/profile.d/conda.sh
+source /opt/miniconda3/conda.sh
 conda activate QC
 
 # output folder
@@ -44,7 +44,7 @@ echo "Processing of the bam files has finished. You can find your data saved in 
 #==============================================#
 # Activate conda to use Samtools
 #!/bin/bash
-source /opt/miniconda3/etc/profile.d/conda.sh
+source /opt/miniconda3/conda.sh
 conda activate QC
 
 #----------------------#
@@ -74,7 +74,7 @@ echo "MappedReadLength.txt files for each bam file has been saved in $output_fol
 # process_mapped_reads.sh - extract mapped reads, then re align to another reference  
 #=======================================================================================#
 #!/bin/bash
-source /opt/miniconda3/etc/profile.d/conda.sh
+source /opt/miniconda3/conda.sh
 conda activate QC
 
 #--------------------------#
@@ -123,7 +123,7 @@ echo "You can find the processed bam files in $output_folder"
 #!/bin/bash
 
 # activate conda environment
-source /opt/miniconda3/etc/profile.d/conda.sh
+source /opt/miniconda3/conda.sh
 conda activate QC
 
 # path to input and output
@@ -175,6 +175,75 @@ echo "The unmapped reads have been aligned to your references."
 echo "The new bam files are saved in  $output_file"
 
 
-#===========================================#
-#
-#===========================================#
+#==================================================================#
+# long read alignment using minimap2 - to be executed by .py file
+#==================================================================#
+#!bin/bash
+source /opt/miniconda3/conda.sh
+conda activate QC
+
+# file and folder paths
+input_file=$"$1"
+output_folder=$"$2"
+reference_file=$"$3"
+
+if [[ -z "$input_file" || -z "$output_folder" || -z "$reference_file" ]]; then
+        echo "Error: Missing input file/ output folder/ reference file"
+        echo "Usage: $0 <input_file> <output_folder> <reference_file>"
+        exit 1
+fi
+
+# loops through bam files:
+for bam_file in "$input_file"/*.bam; do
+
+        # extract bam file name
+        bam_file_name=$(basname "$bam_file" .bam)
+
+        # message to user
+        echo "Processing $bam_file_name"
+
+        # extract mapped reads
+        samtools fastq -F -0 "$output_folder"/"$base_name_file"_mapped_reads_step2.fastq "$bam_file"
+
+        # index reference file
+        minimap2 -d "$output_folder"/ref.mmi "$reference_file"
+
+        # align read extract to new reference, VA_RNA.fa map
+        minimap2 -a -x map-ont "$reference_file" "$output_folder"/"$base_name_file"_mapped_reads_step2.fastq > "$output_folder"/"$bam_file_name"_aligned_reads.sam
+
+        # convert sam file to bam
+        samtools view -@ 8 -bS "$output_folder"/"$bam_file_name"_aligned_reads.sam > samtools sort -@ 8 -o "$output_folder"/"$bam_file_name"_aligned_reads.bam
+
+
+#====================================================#
+# extract subset of mapped reads from large bam file
+#====================================================#
+
+#!/bin/bash
+source /opt/miniconda3/conda.sh
+conda activate QC
+
+# define folders and files
+input_file="$HOME/"
+output_folder="$HOME/"
+reference_file="$HOME/"
+
+for bam_file in "$input_file"/*.bam; do
+        bam_file_name=$(basename "$bam_file" .bam)
+        echo "Processing $bam_file"
+        samtools fastq -F 4 -0 "$output_folder"/"$bam_file_name"_subset_mapped_reads_step1.fastq "$bam_file"
+        seqtk sample -s100 "$output_folder"/"$bam_file_name"_subset_mapped_reads_step1.fastq 10,000,000 > "$output_folder"/"$bam_file_name"_small_subset.fastq
+        bwa-mem2 index "$reference_file"
+        bwa-mem2 mem -t 8 "$reference_file" "$output_folder"/"$bam_file_name"_small_subset.fastq > "$output_folder"/"$bam_file_name"_small_subset_aligned_reads.sam
+        samtools view -@ 8 -bS "$output_folder"/"$bam_file_name"_small_subset_aligned_reads.sam | samtools sort -@ 8 -o "$output_folder"/"$bam_file_name"_small_subset.bam
+        samtools index "$output_folder"/"$bam_file_name"_small_subset_aligned_reads.bam
+done
+        # index bam file
+        samtools index "$output_folder"/"$bam_file_name"_aligned_reads.bam
+
+        # message to user
+        echo "Processing of $bam_file_name finished."
+done
+
+echo "Bam files have been processed."
+
