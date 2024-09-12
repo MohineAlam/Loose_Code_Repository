@@ -1,19 +1,32 @@
 # load libraries
 library(ggplot2)
+library(readr)
+library(tidyr)
 
 # load data
-genome_data <- read.csv("~/mapping_rates_percentage.csv")
-contamination_data <- read.csv("~/contamination_mapping_rates_percentage.csv")
+args <- commandArgs(trailingOnly=TRUE)
+input <- args[1]
+output <- args[2]
+
+# load individual files from input
+files <- here::here(input) %>%
+  fs::dir_ls(glob = "*.csv")
+
+for (i in files) {
+  tmp <- readr::read_csv(file = i)
+  obj_name <- stringr::str_replace(base::basename(i), ".csv". "")
+  base::assign(obj_name,tmp)
+}
 
 # extract genome mapped data
-genome_data <- genome_data[,-1]
+genome_data <- mapping_rates_percentage[,-1]
 mapped_to_genome <- genome_data[genome_data$Categories == "Genome",]
 head(mapped_to_genome)
 unmapped_genome_percentage <- mapped_to_genome[,"Unmapped_Percentage"]
 head(unmapped_genome_percentage)
 
 # extract mapped contaminant data
-contamination_data <- contamination_data[,-1]
+contamination_data <- contamination_mapping_rates_percentage[,-1]
 mapped_contamination_percentage <- contamination_data[,"Mapped_Percentage"]
 head(mapped_contamination_percentage)
 mapped_contamination_names <- contamination_data[,"Categrories"] # FIX NAME
