@@ -3,8 +3,6 @@
 # looped_count_reads.sh count total, mapped, and unmapped reads
 #==============================================================#
 #!/bin/bash
-source /opt/miniconda3/conda.sh
-conda activate QC
 
 # output folder
 output_file=$"$HOME/"
@@ -44,8 +42,6 @@ echo "Processing of the bam files has finished. You can find your data saved in 
 #==============================================#
 # Activate conda to use Samtools
 #!/bin/bash
-source /opt/miniconda3/conda.sh
-conda activate QC
 
 #----------------------#
 # input and output
@@ -74,8 +70,6 @@ echo "MappedReadLength.txt files for each bam file has been saved in $output_fol
 # process_mapped_reads.sh - extract mapped reads, then re align to another reference  
 #=======================================================================================#
 #!/bin/bash
-source /opt/miniconda3/conda.sh
-conda activate QC
 
 #--------------------------#
 # files and directories
@@ -121,10 +115,6 @@ echo "You can find the processed bam files in $output_folder"
 # process_unmapped_reads.sh - extract unmapped reads and then realign to new reference
 #===========================================================================================#
 #!/bin/bash
-
-# activate conda environment
-source /opt/miniconda3/conda.sh
-conda activate QC
 
 # path to input and output
 bam_file=$"$HOME/"
@@ -179,8 +169,6 @@ echo "The new bam files are saved in  $output_file"
 # long read alignment using minimap2 - to be executed by .py file
 #==================================================================#
 #!bin/bash
-source /opt/miniconda3/conda.sh
-conda activate QC
 
 # file and folder paths
 input_file=$"$1"
@@ -220,8 +208,6 @@ for bam_file in "$input_file"/*.bam; do
 #====================================================#
 
 #!/bin/bash
-source /opt/miniconda3/conda.sh
-conda activate QC
 
 # define folders and files
 input_file="$HOME/"
