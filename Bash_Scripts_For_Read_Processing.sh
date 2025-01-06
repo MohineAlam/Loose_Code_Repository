@@ -5,8 +5,8 @@
 #!/bin/bash
 
 # output folder
-output_file=$"$HOME/"
-input_file="$HOME/"
+output_file="$1"
+input_file="$2"
 # initialise count_reads.txt file
 echo "Reads" > "$output_file"
 
