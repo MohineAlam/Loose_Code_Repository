@@ -1,7 +1,7 @@
 # load libraries
 
 # load data in lines of count_reads_of_all_ref.txt
-data <- readLines("~/path/")
+data <- readLines("")
 
 # initialise vectors to store data
 categories <- c()
@@ -47,7 +47,7 @@ data_frame$Unmapped_Percentage <- (data_frame$Unmapped_Reads / data_frame$Total_
 
 final_table <- data_frame
 # Save the table in output directory
-write.csv(final_table, file = "~/Bioinformatics_Projects/Bioinformatics_Projects/Bioinformatics_Team/Archive/RD100313/Analysis_output/ViralQC/SEQNA283_20240819_153933_Cont>
+write.csv(final_table, file = "")
 
 # message to user
 print(final_table)
