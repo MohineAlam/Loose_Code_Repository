@@ -1,6 +1,4 @@
 #!/bin/bash
-source /miniconda3/conda.sh
-conda activate QC
 
 # file output
 output_file=$"$HOME/path/to/output/count_reads.txt"
