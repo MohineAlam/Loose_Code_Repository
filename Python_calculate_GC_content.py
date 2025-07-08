@@ -46,5 +46,8 @@ def gc_content(dna):
 	return round(gc_percent, 2)
 
 if __name__ == "__main__":
-	gc_content = gc_content(args.dna)
-	print(gc_content)
+	gc = gc_content(args.dna)
+        base = os.path.basename(args.dna)
+        basename = os.path.splitext(base)[0]
+        print(f"The GC content for {basename} is: {gc}%")
+
