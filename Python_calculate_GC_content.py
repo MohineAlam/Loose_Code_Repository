@@ -6,10 +6,10 @@ from snapgene_reader import snapgene_file_to_seqrecord
 
 #======= command line argument
 parser = argparse.ArgumentParser(
-	description = "Input DNA fasta file to calculate the GC content."
+	description = "Input DNA or RNA .dna file to calculate the GC content."
 )
 
-parser.add_argument("--dna","-i",required=True,help="Fasta file containing the DNA or RNA sequence.")
+parser.add_argument("--file","-i",required=True,help="Fasta file containing the DNA or RNA sequence.")
 
 args = parser.parse_args()
 
@@ -20,7 +20,7 @@ def gc_content(dna):
 	This function calculates the GC content of the DNA sequence provided.
 
 	Parameters:
-	fasta - a string representing the DNA sequence
+	file - a string representing the DNA sequence
 
 	Output:
 	a float - GC content as a percentage
@@ -28,7 +28,7 @@ def gc_content(dna):
 	"""
 
 	#====== convert .dna file into fasta file
-	seqrecord = snapgene_file_to_seqrecord(dna)
+	seqrecord = snapgene_file_to_seqrecord(file)
 	sequence = str(seqrecord.seq).upper()
 
 	#====== calculate GC content
@@ -46,8 +46,8 @@ def gc_content(dna):
 	return round(gc_percent, 2)
 
 if __name__ == "__main__":
-	gc = gc_content(args.dna)
-        base = os.path.basename(args.dna)
+	gc = gc_content(args.file)
+        base = os.path.basename(args.file)
         basename = os.path.splitext(base)[0]
         print(f"The GC content for {basename} is: {gc}%")
 
