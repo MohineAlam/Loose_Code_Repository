@@ -27,7 +27,7 @@ def gc_content(dna):
 
 	"""
 
-	#====== convert .dna file into fasta file
+	#====== extract sequence from .dna file
 	seqrecord = snapgene_file_to_seqrecord(file)
 	sequence = str(seqrecord.seq).upper()
 
