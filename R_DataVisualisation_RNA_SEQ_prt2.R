@@ -46,7 +46,7 @@ x_axis_label = paste("PC1 ", " (",prop_x, "%)",sep="")
 y_axis_label = paste("PC2 ", " (",prop_y, "%)",sep="")
 
 # update gpca_coordinates table, add the sample column: Load sample sheet - 
-sample_sheet = read.table("C:/Users/malam/Downloads/sample_sheet (1).csv",header=TRUE,sep="\t")
+sample_sheet = read.table("C:/Downloads/sample_sheet (1).csv",header=TRUE,sep="\t")
 
 # add the sample column to the table
 pca_coordinates$sample = sample_sheet$SAMPLE
