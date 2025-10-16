@@ -20,7 +20,7 @@ library(patchwork)
 
 # load pbmc data (peripheral blood mononuclear cells) ####
 # available from 10x genomics
-pbmc.data = Read10X(data.dir = "/home/mohine/Suerat_practice/pbmc3k_filtered_gene_bc_matrices(1)/filtered_gene_bc_matrices/hg19/")
+pbmc.data = Read10X(data.dir = "/home/Suerat_practice/pbmc3k_filtered_gene_bc_matrices(1)/filtered_gene_bc_matrices/hg19/")
 
 # create suerat object ####
 pbmc = CreateSeuratObject(counts = pbmc.data, project="pbmc3k",min.cells=3, min.features=200)
