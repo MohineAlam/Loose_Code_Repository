@@ -1,6 +1,5 @@
 # input needs a bam file - created after alignment with reference.
 #!/bin/bash
-source ~/.bashrc
 
 # command line arguments
 input="$1"
