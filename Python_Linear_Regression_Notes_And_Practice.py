@@ -9,7 +9,7 @@
 # Unsupervised
     # clustering: finds patterns in by grouping them into clusters e.g. social nextworks clustering topics in their news feeds
 
-#### LINEAR REGRESSION - independent variable x (height) and find predictive value of dndependent variable y (weight)
+#### LINEAR REGRESSION - independent variable x (height) and find predictive value of dedependent variable y (weight)
     # y = g(x)
     # use training data set to infer what the function g should be
     # can now use learned function g to predict values y, for new values x
