@@ -1,3 +1,5 @@
+########### This code demonstrate python used for different applications in molecular biology, sorting through data ############
+
 from zlib import Z_FULL_FLUSH
 
 
