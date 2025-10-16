@@ -1,5 +1,6 @@
 # input needs a bam file - created after alignment with reference.
 #!/bin/bash
+set -e
 
 # command line arguments
 input="$1"
@@ -29,7 +30,7 @@ for bamfile in "$input"/*.bam; do
         basename=$(basename "$bamfile" .bam)
         # message to user
         echo "Processing $basename. Extracting read length of each mapped reads."
-        # extract mapped read length data
+        # extract mapped read length data - exclude any unmapped, supplementary, and not primary (secondary) reads
         samtools fastq -F 2308 "$bamfile" | awk "NR % 4 == 2" | awk "{print length}" > "$output"/"$basename"_MappedReadLength.txt
         # message to user
         echo "Finished processing $basename."
