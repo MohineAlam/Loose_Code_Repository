@@ -2,9 +2,9 @@
 # encompasses tutorial 2 - 4
 
 # load data ####
-gene_statistical_data = read.table("C:/Users/malam/Downloads/DE_Senes_vs_Prolif.csv",header=TRUE,row.names=1,sep="\t")
-gene_expression = read.table("C:/Users/malam/Downloads/EM (1).csv",header=TRUE,row.names=1,sep="\t")
-gene_background = read.table("C:/Users/malam/Downloads/Human_Background_GRCh38.p13.csv",header=TRUE,row.names=1,sep="\t")
+gene_statistical_data = read.table("C:/Downloads/DE_Senes_vs_Prolif.csv",header=TRUE,row.names=1,sep="\t")
+gene_expression = read.table("C:/Downloads/EM (1).csv",header=TRUE,row.names=1,sep="\t")
+gene_background = read.table("C:/Downloads/Human_Background_GRCh38.p13.csv",header=TRUE,row.names=1,sep="\t")
 
 # MAKE - master table ####
 # change the name of gene background symbol to gene_names
@@ -65,8 +65,8 @@ sig_gene_names = row.names(significant_genes)
 significant_genes_expression_scaled = all_gene_expression_scaled[sig_gene_names,]
 
 # SAVE - all tables
-write.table(all_gene_expression_scaled, file= "C:/Users/malam/OneDrive - Oxford Genetics Ltd/Desktop/Documents/Bioinformatics/Course_data_two/table1.csv",sep="\t")
-write.table(significant_genes_expression_scaled, file= "C:/Users/malam/OneDrive - Oxford Genetics Ltd/Desktop/Documents/Bioinformatics/Course_data_two/table1.csv",sep="\t")
+write.table(all_gene_expression_scaled, file= "C:/Course_data_two/table1.csv",sep="\t")
+write.table(significant_genes_expression_scaled, file= "C:/Course_data_two/table1.csv",sep="\t")
 
 #---------------------------------------------------------------------------------------
 # MAKING PLOTS ####
@@ -107,6 +107,6 @@ ggp_volcano
 # save plots as png
 install.packages("ggrepel")
 library(ggrepel)
-png("C:/Users/malam/OneDrive - Oxford Genetics Ltd/Desktop/Documents/Bioinformatics/Course_data_two/plot.png", height = 400, width = 400)
+png("C:/Course_data_two/plot.png", height = 400, width = 400)
 print(ggp_volcano)
 dev.off()  
