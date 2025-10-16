@@ -22,8 +22,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 
-# command line arguments: input_gene, output ###
-args =
+##### ADD argparse interface in command line, arguments: input_gene, output ###
 
 #===================================#
 # function to fetch the genetic data
