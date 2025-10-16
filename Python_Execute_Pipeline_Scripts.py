@@ -13,8 +13,8 @@ parser.add_argument('-r','--reference',required=False,help='Path to reference')
 args = parser.parse_args()
 
 # path to your bash script
-ITR_alignment = './ITR_Alignment.sh'
-RNA_alignment = './RNA_Alignment.sh'
+A_alignment = './A_Alignment.sh'
+B_alignment = './B_Alignment.sh'
 
 # function to run bash scripts
 def run_script(script_path,input,output,reference):
@@ -32,17 +32,17 @@ def check_directory_file_exist(input,output,reference):
 # Output the result
 def alignments(input,output,reference):
         if check_directory_file_exist(input,output):
-                RNA_Alignment = run_script(RNA_Alignment,input,output,reference)
-                print(RNA_Alignment.stdout)
-                print(RNA_Alignment.stderr)
-                if RNA_Alignment.returncode != 0:
-                        print("Error: RNA_Alignment.sh script failed.")
+                A_Alignment_cmd = run_script(A_Alignment,input,output,reference)
+                print(A_Alignment_cmd.stdout)
+                print(A_Alignment_cmd.stderr)
+                if A_Alignment_cmd.returncode != 0:
+                        print("Error: A_Alignment.sh script failed.")
                         sys.exit(1)
-                ITR_alignment = run_script(ITR_alignment,input,output,reference)
-                print(ITR_alignment.stdout)
-                print(ITR_alignment.stderr)
-                if ITR_alignment.returncode != 0:
-                        print("Error: ITR_Alignment.sh script failed.")
+                B_alignment_cmd = run_script(B_alignment,input,output,reference)
+                print(B_alignment_cmd.stdout)
+                print(B_alignment_cmd.stderr)
+                if B_alignment_cmd.returncode != 0:
+                        print("Error: B_Alignment.sh script failed.")
                         sys.exit(1)
         else:
                 print("Missing data. Input, output, or reference pathway is not correct.")
