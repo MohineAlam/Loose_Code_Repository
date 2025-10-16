@@ -13,6 +13,19 @@ else
         echo "Input pathway exists."
 fi
 
+######################## or use function
+#check_path() {
+#  if [[ ! -e "$1" ]]; then
+#    echo "Pathway doesn't exist."
+#    exit 1
+#  else
+#    echo "Pathway exists"
+#  fi
+#}
+
+check_path "$input"
+########################
+
 # create new folder to save output file
 output="$input"/Read_Counts
 
