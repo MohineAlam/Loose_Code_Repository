@@ -1,5 +1,4 @@
 #!/bin/bash
-source ~/.bashrc
 
 # command line argument
 input="$1"
