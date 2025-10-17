@@ -23,7 +23,7 @@ fi
 for bamfile in "$input"/*.bam; do
         # extract file basename
         basename=$(basename "$bamfile" .bam)
-        # add md tag - which identifies structural variants
+        # add md tag - which identifies structural variants (it fins matches, mismatches, deletions)
         samtools calmd "$bamfile" "$ref" -b > "$input"/"$basename"_md.bam
         # call sniffles tool with tagged bam file
         sniffles --mapq 20 -i "$input"/"$basename"_md.bam -v "$input"/"$basename"_cnv.vcf --threads 35
