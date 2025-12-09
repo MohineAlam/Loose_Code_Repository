@@ -31,41 +31,26 @@ done
 
 echo "Processing done. Results are in $output"
 
-# bash scripts for sequence processing
-#==============================================================#
-# looped_count_reads.sh count total, mapped, and unmapped reads
-#==============================================================#
-##!/bin/bash
-#set -e
+#===================================================================#
+# Use flagstats
+#===================================================================#
 
-# output folder
-#output_file="$1"
-#input_file="$2"
-# initialise count_reads.txt file
-#echo "Reads" > "$output_file"
+for bamfile in "$input"/*.bam; do
 
-# loop through all .bam files
-#for bam_file in "$input_file"/*.bam; do
+	# basename
+	basename=$(basename "$bamfile" .bam)
+	# extract flagstat file
+	samtools flagstat "$bamfile" > "$output"/"${basename}".flagstat
 
-        # message to user
-#        echo "Running read counts for $bam_file"
+	# extract total reads
+	total=$(grep "in total" "$output"/"${basename}".flagstat | awk "{print $1}") # $3 for not qc passed total reads
+	# extract mapped
+	mapped=$(grep "mapped" "$output"/"${basename}".flagstat | awk "{print $1}")
+	# extract unmapped
+	unmapped=$((total - mapped))
 
-        # extract names of bam files
-#        bam_file_name=$(basename "$bam_file" .bam)
-        # find total reads of bam files
-#        total_reads=$(samtools view -c "$bam_file")
-        # find mapped reads of bam files
-#        mapped_reads=$(samtools view -c -F 4 "$bam_file")
-        # find unmapped reads of bam files
-#        unmapped_reads=$(samtools view -c -f 4 "$bam_file")
+	echo "total_reads $total" >> "$output"/"${basename}"_countreads.txt
+	echo "mapped_reads $mapped" >> "$output"/"${basename}"_countreads.txt
+	echo "unmapped_reads $unmapped" >> "$output"/"${basename}"_countreads.txt
 
-        # save total reads to count_reads.txt file
-#        echo "$bam_file_name Total_Reads: $total_reads" >> "$output_file"
-        # save mapped reads to count_reads.txt file
-#        echo "$bam_file_name Mapped_Reads: $mapped_reads" >> "$output_file"
-        # save unmapped reads to count_reads.txt file
-#        echo "$bam_file_name Unmapped_Reads: $unmapped_reads" >> "$output_file"
-#done
-
-#echo "Processing of the bam files has finished. You can find your data saved in $input_file"
-
+done	
